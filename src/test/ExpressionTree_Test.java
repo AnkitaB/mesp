@@ -3,7 +3,9 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.graphbuilder.math.Expression;
 import com.graphbuilder.math.ExpressionTree;
@@ -414,4 +416,189 @@ public void roundTest() {
 	}
 
 }
+
+@Test
+public void combinationTest() {
+	try {
+		String s = "combin(a,b)";
+		Expression x = ExpressionTree.parse(s);
+
+		VarMap vm = new VarMap(false);
+		vm.setValue("a",10);
+		vm.setValue("b",4);
+	
+		
+		FuncMap fm = new FuncMap(); // 
+		fm.loadDefaultFunctions();
+		
+		
+		System.out.println("In well Formed");
+		
+		double result= x.eval(vm, fm);
+		double delta = 0.00;
+		System.out.println("Round:"+result);
+		Assert.assertEquals(210.0, result, delta);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("Not yet implemented");
+	}
+
+}
+
+@Test
+public void modTest() {
+	try {
+		String s = "mod(a,b)";
+		Expression x = ExpressionTree.parse(s);
+
+		VarMap vm = new VarMap(false);
+		vm.setValue("a",4);
+		vm.setValue("b",10);
+	
+		
+		FuncMap fm = new FuncMap(); // 
+		fm.loadDefaultFunctions();
+		
+		
+		System.out.println("In Mod");
+		
+		double result= x.eval(vm, fm);
+		double delta = 0.00;
+		System.out.println("Mod:"+result);
+		Assert.assertEquals(4.0, result, delta);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("Not yet implemented");
+	}
+
+}
+
+@Test
+public void aSinCosTest() {
+	try {
+		String s = "asin(x+y)+acos(y*x)+atan(z)";
+		Expression x = ExpressionTree.parse(s);
+
+		VarMap vm = new VarMap(false);
+		vm.setValue("x",0);
+		vm.setValue("y",0);
+		vm.setValue("z",30);	
+		
+		FuncMap fm = new FuncMap(); // 
+		fm.loadDefaultFunctions();
+		
+		
+		System.out.println("In Sine Cos Tan Inverse");
+		
+		double result= x.eval(vm, fm);
+		double delta = 0.001;
+		System.out.println("Inverse:"+result);
+		Assert.assertEquals(3.108271657711546, result, delta);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("Not yet implemented");
+	}
+
+}
+
+@Test
+public void aSinhCoshTest() {
+	try {
+		String s = "asinh(x)+acosh(x)+tanh(x)";
+		Expression x = ExpressionTree.parse(s);
+
+		VarMap vm = new VarMap(false);
+		vm.setValue("x",30);
+	
+		
+		FuncMap fm = new FuncMap(); // 
+		fm.loadDefaultFunctions();
+		
+		
+		System.out.println("In Sinh Cosh Tanh");
+		
+		double result= x.eval(vm, fm);
+		double delta = 0.001;
+		System.out.println("h:"+result);
+		Assert.assertEquals(9.188688892962617, result, delta);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("Not yet implemented");
+	}
+
+}
+
+@Test
+public void lnlgTest() {
+	try {
+		String s = "lg(x)+ln(e())";
+		Expression x = ExpressionTree.parse(s);
+
+		VarMap vm = new VarMap(false);
+		vm.setValue("x",16);
+		vm.setValue("e", Math.E);
+	
+		
+		FuncMap fm = new FuncMap(); // 
+		fm.loadDefaultFunctions();
+		
+		
+		System.out.println("In LnLg");
+		
+		double result= x.eval(vm, fm);
+		double delta = 0.00;
+		System.out.println("Ln lg:"+result);
+		Assert.assertEquals(5., result, delta);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("Not yet implemented");
+	}
+
+}
+
+@Rule
+  public ExpectedException exception = ExpectedException.none();
+
+@Test
+public void nosTest() {
+	try {
+		exception.expectMessage("(2) Expected operator or close bracket but found: 2");
+		String s = "1 2 3 4";
+		Expression x = ExpressionTree.parse(s);
+		
+
+
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("(2) Expected operator or close bracket but found: 2");
+	}
+
+}
+
+
+@Test
+public void emptyStringTest() {
+	try {
+		exception.expectMessage("(1) Incomplete expression.");
+		String s = "+";
+		Expression x = ExpressionTree.parse(s);
+		
+
+
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		System.out.println(e);
+		fail("(1) Incomplete expression.");
+	}
+
+}
+
 }
